@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="Company">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Departments" maxOccurs="1"/>
+				<xs:element ref="Divisions" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="Employees" maxOccurs="unbounded"/>
+				<xs:element ref="Worksfor"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- Definition of root "Department" element-->
+	<xs:element name="Departments">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Department" minOccurs="1" maxOccurs="unbounded">
+					<!-- Definition of "Dept" element-->
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="deptId" type="deptId" minOccurs="1" maxOccurs="1"/>
+							<xs:element name="deptName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+							<xs:element name="deptAddr" type="xs:string" minOccurs="1" maxOccurs="1"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="Dept_PK">
+			<xs:selector xpath=".//Departments/Department"/>
+			<xs:field xpath="deptId"/>
+		</xs:key>
+	</xs:element>
+	<xs:simpleType name="deptId">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Z][A-Z][A-Z]"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- Definition of root "Division" element-->
+	<xs:element name="Divisions">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Division" minOccurs="1" maxOccurs="unbounded">
+					<!-- Definition of "Div" element-->
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="divId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+							<xs:element name="divName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+							<xs:element name="divPhone" type="divPhone" minOccurs="1" maxOccurs="1"/>
+							<xs:element name="housedDeptId" type="xs:string"/>
+							<xs:element name="managerEmpId" type="xs:string"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="Div_PK">
+			<xs:selector xpath=".//Divisions/Division"/>
+			<xs:field xpath="divId"/>
+		</xs:key>
+		<xs:keyref name="FKDivToDepartment" refer="Dept_PK">
+			<xs:selector xpath="Company/Departments"/>
+			<xs:field xpath="housedDeptId"/>
+		</xs:keyref>
+		<xs:keyref name="FKDivToEmployee" refer="Emp_PK">
+			<xs:selector xpath="Company/Employees"/>
+			<xs:field xpath="managerEmpId"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:simpleType name="divPhone">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[1-9]{3}-[0-9]{3}-[0-9]{4}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- Definition of root "Employee" element-->
+	<xs:element name="Employees">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Employee" minOccurs="1" maxOccurs="unbounded">
+					<!-- Definition of "Emp" element-->
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="empId" type="xs:string" minOccurs="1" maxOccurs="1"/>
+							<xs:element name="empName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+							<xs:element name="empPhone" type="empPhone" minOccurs="0" maxOccurs="1"/>
+							<xs:element name="empOffice" type="xs:string" minOccurs="1" maxOccurs="1"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="Emp_PK">
+			<xs:selector xpath=".//Employees/Employee"/>
+			<xs:field xpath="empId"/>
+		</xs:key>
+	</xs:element>
+	<xs:simpleType name="empPhone">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[1-9]{3}-[0-9]{3}-[0-9]{4}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- Definition of root "Worksfor" element-->
+	<xs:element name="Worksfor">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Works" minOccurs="1" maxOccurs="unbounded">
+					<!-- Definition of "Works" element-->
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="divId" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+							<xs:element name="empId" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+							<xs:element name="percentTime" type="xs:integer" minOccurs="1" maxOccurs="1"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="Work_PK">
+			<xs:selector xpath=".//Works"/>
+			<xs:field xpath="divId"/>
+			<xs:field xpath="empId"/>
+		</xs:key>
+		<xs:keyref name="FKWorkToDepartment" refer="Dept_PK">
+			<xs:selector xpath="Company/Departments"/>
+			<xs:field xpath="divId"/>
+		</xs:keyref>
+		<xs:keyref name="FKWorkToEmployee" refer="Emp_PK">
+			<xs:selector xpath="Company/Employees"/>
+			<xs:field xpath="empId"/>
+		</xs:keyref>
+	</xs:element>
+</xs:schema>
