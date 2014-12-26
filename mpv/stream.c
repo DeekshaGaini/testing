@@ -27,7 +27,7 @@ int main() {
     socketfd = socket(AF_INET, SOCK_STREAM, 0);
     printf("Socket Creation: %s\n", strerror(errno));
 
-    filefd = open("/home/ashwin/Desktop/gravity.mp4", O_RDONLY);
+    filefd = open("/home/deeksha/Desktop/gravity.mp4", O_RDONLY);
     printf("File open: %s\n", strerror(errno));
 
     sockserv.sin_family = AF_INET;

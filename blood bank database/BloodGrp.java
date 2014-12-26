@@ -20,7 +20,7 @@ public class BloodGrp extends Applet implements ItemListener {
         try
         {
         Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-        con = DriverManager.getConnection("jdbc:odbc:sahi", "system", "sahithya");
+        con = DriverManager.getConnection("jdbc:odbc:deeksha", "system", "deeksha");
         st = con.createStatement();
         }
         catch(Exception e)

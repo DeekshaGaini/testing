@@ -17,7 +17,7 @@ public class User
         try {
                 Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
            
-                Connection con = DriverManager.getConnection("jdbc:odbc:sahi","system","sahithya");
+                Connection con = DriverManager.getConnection("jdbc:odbc:deeksha","system","deeksha");
            
                 Statement st=con.createStatement();
                 BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
