@@ -1,0 +1,1 @@
+SQL> create table usertab(userid number primary key,username varchar2(20) not null,age number not null,bloodgrp varchar2(10) not null,contact varchar2(20) unique);

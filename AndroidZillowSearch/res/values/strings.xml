@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AndroidZillowSearch</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="err">This field cannot be empty</string>
+    <string name="heading">Search Your Property Here</string>
+    <string name="address">Address*:</string>
+    <string name="Street_Address">Street Address</string>
+    <string name="city">City*:</string>
+    <string name="cityhint">city</string>
+    <string name="state">State*:</string>
+    <string name="statehint">Choose State</string>
+    <string name="search">Search</string>
+    <string name="title_activity_display_property">DisplayProperty</string>
+    <string name="title_activity_games_fragment">GamesFragment</string>
+
+</resources>

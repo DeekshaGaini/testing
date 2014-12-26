@@ -1,0 +1,62 @@
+live streaming
+Streaming media is multimedia that is constantly received by and presented to an end-user while being delivered by a streaming provider. 
+video is a kind of multimedia and if one wants to watch some video contents stored on some server over the Internet from some remote machine then, as the size of video content is relatively large, it will take time to get transferred completely and after that to play it. Rather than doing this, one can 'stream' that video from where its stored and those who wish to view that video can access it from their machine, only the difference here is that, end user does not need to wait until complete video gets downloaded, but can start watching it as soon as it starts streaming. So, watching video and downloading video are being done simultaneously. This type of streaming is known as on-demand video streaming, because the video is stored on the machine and is streamed when it is demanded. And the machine which does this streaming is called as streaming server.
+
+This approach of on-demand video streaming is very good if the video is already present on the streaming server. But, this is not the case always. Sometimes, you need to access video contents which are not already present on the server, but rather are being generated dynamically. For example, live sport such as football, game is being played and at the same time you can watch it on your television or computers. So, such kind of streaming of videos is known as live video streaming.
+
+Here, a file already available on server is transcoded using gstreamer utility gst-launch and at the same time its being live streamed.
+
+For simplicity only one file is on server. And its being transcoded into WebM format and stream it.
+
+
+
+On client's browser (which supports HTML5), load the video tag for making request to server. A simple html code for doing it is given below,
+  <html>  
+ <body>  
+ <h1> Test for simple WebM Live streaming </h1>  
+ <video src="http://127.0.0.1:8800/live_stream.ogg" type="video/ogg" "autoplay="autoplay" controls="controls" height="360" width="640" >  
+ </video>  
+ </body>  
+ </html>  
+Here, IP address and port specified in the URL should be changed accordingly, i.e. IP address of machine where your server runs and port on which you are going to listen.
+
+
+In simple terms, the streaming server keeps listening to a dedicated port for any request for live stream. When it receives a request from some client, it responds for that request as a live stream. This happens as follows,
+
+When client loads video tag, in this case above mentioned html code, browser sends a HTTP GET request, which has following format,
+ GET /live_stream.webm HTTP/1.1  
+ Host: 127.0.0.1:8800  
+ Connection: keep-alive  
+ Referer: file:///home/toshish/Desktop/vid_tag.html  
+ User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US) AppleWebKit/534.10 (KHTML, like Gecko) Chrome/8.0.552.224 Safari/534.10  
+ Accept-Encoding: gzip,deflate,sdch  
+ Accept-Language: en-US,en;q=0.8  
+ Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.3 Range: bytes=0-1024  
+This request means that, browser has requested something called as live_stream.webm to the Host 192.168.2.2 who is listening on port 8800. User-Agent shows information about client browser. Here, important field for us is 'Range', its value is "bytes=0-1024", this means that, browser has requested for first 1025 bytes i.e. from 0th to 1024th byte of live_stream.webm.
+
+Server sends response to this request. It is required to get file header. The HTTP response header is as follows,
+ HTTP/1.0 200 OK  
+ Date: Sun, 07 Apr 2013 02:49:58 IST  
+ Connection: close  
+ Cache-control: private Content-type: video/webm  
+ Server: MyServer  
+ Sending response as 200 OK, so the client browser understands that it has got completely OK response from server and server is sending requested bytes to client.
+ 
+But, when client receives whatever data required by it, i.e. mainly the header of the file, client resets the connection with the server, and sends another GET request exactly same as previous one from some other pseudo-random port which is different from previous.
+
+But, this time connection is not reset by client after reading header, this time browser keeps reading data on the stream. So, like previous one, we again send the same HTTP response header to client and keep on sending data to the client.
+
+
+gst-launch-0.10 oggmux name="mux" ! filesink location=/home/ashwin/Desktop/Live/live_stream.ogg uridecodebin uri=file:///home/ashwin/Videos/gravity.mp4 name="d" { d. ! ffmpegcolorspace ! theoraenc ! queue ! mux. } { d. ! progressreport ! audioconvert ! audiorate ! vorbisenc ! queue ! mux. }
+
+The url of your source file, i.e. a file already available at you to the uri attribute of uridecodebin, and path of the new file to location attribute of filesink, both the attributes are shown above.
+Above mentioned command is a gstreamer pipeline, this will transcode the given file to ogg file.
+
+
+But, as transcoding is highly CPU extensive task and it requires lots of computation and processing, it takes a fair amount of time. Hence, here we can actually see the effect of live streaming when the file is being transcoded at the same time. Hence, choosing a file with fairly large size and resolution , so that transcoding will take fair amount of time and in between you can observe the live streaming of transcoded video (being dumped in live_stream.ogg in this case).
+
+Streaming media is multimedia that is constantly received by and presented to an end-user while being delivered by a provider. Its verb form, "to stream", refers to the process of delivering media in this manner; the term refers to the delivery method of the medium rather than the medium itself.
+
+A client media player can begin playing the data (such as a movie) before the entire file has been transmitted. Distinguishing delivery method from the media distributed applies specifically to telecommunications networks, as most other delivery systems are either inherently streaming (e.g., radio, television) or inherently nonstreaming (e.g., books, video cassettes, audio CDs). For example, in the 1930s, muzak was among the earliest popularly available streaming media; nowadays Internet television is a common form of streamed media. The term "streaming media" can apply to media other than video and audio such as live closed captioning, stock ticker, and real-time text, which are all considered "streaming text". The term "streaming" was first used in the early 1990s as a better description for video on demand on IP networks; at the time such video was usually referred to as "store and forward video",[1] which was misleading nomenclature.
+
+Live streaming, delivering live over the Internet, involves a camera for the media, an encoder to digitize the content, a media publisher, and a content delivery network to distribute and deliver the content.

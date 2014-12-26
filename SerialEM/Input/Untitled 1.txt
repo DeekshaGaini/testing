@@ -1,0 +1,4 @@
+dataset name ,attribute count ,cluster count
+iris ,4,3
+usermodel,5,4
+corel5k,499,374

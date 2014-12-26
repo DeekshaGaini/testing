@@ -1,0 +1,4 @@
+gst-launch-0.10 oggmux name="mux" ! filesink location=/home/ashwin/Desktop/live_stream.ogg uridecodebin uri=file:///home/ashwin/Desktop/gravity.mp4 name="d" { d. ! ffmpegcolorspace ! theoraenc ! queue ! mux. } { d. ! progressreport ! audioconvert ! audiorate ! vorbisenc ! queue ! mux. }
+
+
+gst-launch-0.10 oggmux name="mux" ! filesink location=/home/ashwin/Desktop/live_stream.ogg uridecodebin uri=file:///home/ashwin/Desktop/gravity.mp4 name="d" { d. ! ffmpegcolorspace ! theoraenc ! queue ! mux. } { d. ! progressreport ! audioconvert ! audiorate ! vorbisenc ! queue ! mux. }
